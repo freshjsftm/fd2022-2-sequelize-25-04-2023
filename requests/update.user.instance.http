@@ -1,0 +1,11 @@
+PUT http://localhost:3000/api/users/1/instance HTTP/1.1
+Content-Type: application/json
+
+{
+  "firstName":"Alex",
+  "lastName":"Rob",
+  "email":"mary@gmail.com",
+  "password":"123123",
+  "birthday":"2003-12-18",
+  "isMale":false
+}
