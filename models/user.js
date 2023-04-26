@@ -48,6 +48,9 @@ module.exports = (sequelize, DataTypes) => {
           notNull: true,
           notEmpty: true,
         },
+        set(value) {
+          this.setDataValue('password', 'hash');
+        }
       },
       birthday: {
         allowNull: false,
