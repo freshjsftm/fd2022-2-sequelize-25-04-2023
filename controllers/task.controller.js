@@ -1,3 +1,4 @@
+const createError = require('http-errors');
 const { Task } = require('../models');
 
 // module.exports.createTask = async (req, res, next) => {
@@ -30,7 +31,30 @@ module.exports.getUserTasks = async (req, res, next) => {
   try {
     const {userInstance} = req;
     const tasks = await userInstance.getTasks();
+    if(tasks.length===0){
+      return res.status(204).send()
+    }
     res.status(200).send({data: tasks})
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports.updateTask = async (req, res, next) => {
+  try {
+    const {body, taskInstance} = req;
+    const taskUpdated = await taskInstance.update(body);
+    res.status(200).send({data: taskUpdated})
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports.deleteTask = async (req, res, next) => {
+  try {
+    const { taskInstance } = req;
+    await taskInstance.destroy();
+    res.status(200).send({data: taskInstance})
   } catch (error) {
     next(error)
   }

@@ -1,3 +1,4 @@
+const createError = require('http-errors');
 const { User } = require('../models');
 module.exports.checkUser = async (req, res, next) => {
   try {
@@ -8,7 +9,7 @@ module.exports.checkUser = async (req, res, next) => {
       attributes: { exclude: ['password'] },
     });
     if (!user) {
-      throw new Error('user not found');
+      return next(createError(404, 'User not found'));
     }
     req.userInstance = user;
     next();

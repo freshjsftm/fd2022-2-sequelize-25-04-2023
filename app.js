@@ -8,8 +8,9 @@ app.use('/api', router);
 
 app.use((err, req, res, next) => {
   console.log('err =====>>>>> ', err);
-  res.status(500).send({
-    error: [{ message: err.message }],
+  const status = err.status || 500;
+  res.status(status).send({
+    error: [{ message: err.message || 'Server Error' }],
   });
 });
 
