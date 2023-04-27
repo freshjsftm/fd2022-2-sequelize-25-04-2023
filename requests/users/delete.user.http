@@ -1,0 +1,1 @@
+DELETE http://localhost:3000/api/users/4/instance HTTP/1.1

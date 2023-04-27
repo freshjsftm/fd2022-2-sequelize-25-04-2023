@@ -81,14 +81,16 @@ module.exports.updateUserInstance = async (req, res, next) => {
   try {
     const {
       body,
-      params: { idUser },
+      //params: { idUser },
+      userInstance
     } = req;
-    const userInstance = await User.findByPk(idUser);
+    //const userInstance = await User.findByPk(idUser);
     const updatedUser = await userInstance.update(body, {
       returning: true,
     });
-    updatedUser.password = undefined;
-    res.status(200).send({ data: updatedUser });
+    const user = updatedUser.get()
+    delete user.password;
+    res.status(200).send({ data: user });
   } catch (error) {
     next(error);
   }
@@ -97,13 +99,15 @@ module.exports.updateUserInstance = async (req, res, next) => {
 module.exports.deleteUserInstance = async (req, res, next) => {
   try {
     const {
-      params: { idUser },
+      //params: { idUser },
+      userInstance
     } = req;
-    const user = await User.findByPk(idUser, {
-      attributes: { exclude: ['password'] },
-    });
-    await user.destroy();
-    res.status(200).send({ data: user });
+    // const user = await User.findByPk(idUser, {
+    //   attributes: { exclude: ['password'] },
+    // });
+    await userInstance.destroy();
+    //userInstance.password = undefined;
+    res.status(200).send({ data: userInstance });
   } catch (error) {
     next(error);
   }
