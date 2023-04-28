@@ -23,8 +23,10 @@ module.exports.createUser = async (req, res, next) => {
 
 module.exports.getAllUsers = async (req, res, next) => {
   try {
+    const { pagination = {} } = req;
     const users = await User.findAll({
       attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
+      ...pagination,
     });
     if (users.length === 0) {
       return next(createError(404, 'Users not found'));
@@ -39,7 +41,7 @@ module.exports.getUserByPk = async (req, res, next) => {
   try {
     const {
       //params: { idUser },
-      userInstance
+      userInstance,
     } = req;
     // const user = await User.findByPk(idUser, {
     //   attributes: { exclude: ['password'] },

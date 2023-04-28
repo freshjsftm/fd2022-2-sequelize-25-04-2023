@@ -16,10 +16,7 @@ const { Task } = require('../models');
 
 module.exports.createTask = async (req, res, next) => {
   try {
-    const {
-      body,
-      userInstance
-    } = req;
+    const { body, userInstance } = req;
     const task = await userInstance.createTask(body);
     res.status(201).send({ data: task });
   } catch (error) {
@@ -29,33 +26,33 @@ module.exports.createTask = async (req, res, next) => {
 
 module.exports.getUserTasks = async (req, res, next) => {
   try {
-    const {userInstance} = req;
-    const tasks = await userInstance.getTasks();
-    if(tasks.length===0){
-      return res.status(204).send()
+    const { userInstance, pagination = {} } = req;
+    const tasks = await userInstance.getTasks(pagination);
+    if (tasks.length === 0) {
+      return res.status(204).send();
     }
-    res.status(200).send({data: tasks})
+    res.status(200).send({ data: tasks });
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
 module.exports.updateTask = async (req, res, next) => {
   try {
-    const {body, taskInstance} = req;
+    const { body, taskInstance } = req;
     const taskUpdated = await taskInstance.update(body);
-    res.status(200).send({data: taskUpdated})
+    res.status(200).send({ data: taskUpdated });
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
 module.exports.deleteTask = async (req, res, next) => {
   try {
     const { taskInstance } = req;
     await taskInstance.destroy();
-    res.status(200).send({data: taskInstance})
+    res.status(200).send({ data: taskInstance });
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
