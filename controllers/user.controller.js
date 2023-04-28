@@ -9,9 +9,6 @@ module.exports.createUser = async (req, res, next) => {
     if (!newUser) {
       return next(createError(400, 'Bad request'));
     }
-    // console.log(newUser)
-    // newUser.password = undefined;
-
     const user = newUser.get();
     delete user.password;
 
@@ -39,13 +36,9 @@ module.exports.getAllUsers = async (req, res, next) => {
 
 module.exports.getUserByPk = async (req, res, next) => {
   try {
-    const {
-      //params: { idUser },
-      userInstance,
-    } = req;
-    // const user = await User.findByPk(idUser, {
-    //   attributes: { exclude: ['password'] },
-    // });
+    const { userInstance } = req;
+    const countUsersTasks = await userInstance.countTasks();
+    userInstance.dataValues.countTasks = countUsersTasks;
     res.status(200).send({ data: userInstance });
   } catch (error) {
     next(error);
@@ -64,10 +57,6 @@ module.exports.updateUserStatic = async (req, res, next) => {
       returning: true,
     });
     updatedUser.password = undefined;
-
-    // const user = updatedUser.get();
-    // delete user.password;
-
     res.status(200).send({ data: updatedUser });
   } catch (error) {
     next(error);
@@ -78,10 +67,8 @@ module.exports.updateUserInstance = async (req, res, next) => {
   try {
     const {
       body,
-      //params: { idUser },
       userInstance,
     } = req;
-    //const userInstance = await User.findByPk(idUser);
     const updatedUser = await userInstance.update(body, {
       returning: true,
     });
@@ -96,14 +83,9 @@ module.exports.updateUserInstance = async (req, res, next) => {
 module.exports.deleteUserInstance = async (req, res, next) => {
   try {
     const {
-      //params: { idUser },
       userInstance,
     } = req;
-    // const user = await User.findByPk(idUser, {
-    //   attributes: { exclude: ['password'] },
-    // });
     await userInstance.destroy();
-    //userInstance.password = undefined;
     res.status(200).send({ data: userInstance });
   } catch (error) {
     next(error);
