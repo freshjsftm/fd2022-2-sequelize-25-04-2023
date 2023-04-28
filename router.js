@@ -6,7 +6,6 @@ const { checkTask , checkIsUserTask } = require('./middlewares/task.mw');
 const {paginate} = require('./middlewares/paginate.mw');
 const router = Router();
 
-// http://localhost:3000/api/users
 router.post('/users', UserController.createUser);
 router.get('/users', paginate, UserController.getAllUsers);
 
