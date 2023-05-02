@@ -7,9 +7,9 @@ const pickBody = (body) =>
 
 module.exports.createGroup = async (req, res, next) => {
   try {
-    const { body } = req;
+    const { body, file:{filename} } = req;
     const values = pickBody(body);
-    const newGroup = await Group.create(values);
+    const newGroup = await Group.create({...values, imagePath: filename});
 
     //find user
     const user = await User.findByPk(body.userId, {
@@ -24,7 +24,7 @@ module.exports.createGroup = async (req, res, next) => {
     //await user.addGroup(newGroup);
     await newGroup.addUser(user);
 
-    res.status(201).send({ data: newGroup });
+    res.status(201).send({data: newGroup});
   } catch (error) {
     next(error);
   }
