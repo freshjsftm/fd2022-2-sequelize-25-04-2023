@@ -45,7 +45,6 @@ module.exports.addImage = async (req, res, next) => {
   }
 }
 
-
 module.exports.getUserGroups = async (req, res, next) => {
   try {
     const {
@@ -129,3 +128,7 @@ module.exports.getUsersInGroup = async (req, res, next) => {
     next(error);
   }
 };
+
+//update group put
+//delete group
+//кількість юзерів в групі
