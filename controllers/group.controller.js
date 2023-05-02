@@ -2,10 +2,13 @@ const _ = require('lodash');
 const createError = require('http-errors');
 const { Group, User } = require('../models');
 
+const pickBody = (body) =>
+  _.pick(body, ['title', 'imagePath', 'description', 'isPrivate']);
+
 module.exports.createGroup = async (req, res, next) => {
   try {
     const { body } = req;
-    const values = _.pick(body, ['title', 'imagePath', 'description']);
+    const values = pickBody(body);
     const newGroup = await Group.create(values);
 
     //find user
@@ -26,6 +29,22 @@ module.exports.createGroup = async (req, res, next) => {
     next(error);
   }
 };
+
+module.exports.addImage = async (req, res, next) => {
+  try {
+    const {file:{filename}, params:{idGroup}} = req;
+    const [,[groupUpdated]] = await Group.update({
+      imagePath: filename
+    },{
+      where: { id: idGroup},
+      returning: true
+    })
+    res.status(200).send({data: groupUpdated})
+  } catch (error) {
+    next(error)
+  }
+}
+
 
 module.exports.getUserGroups = async (req, res, next) => {
   try {

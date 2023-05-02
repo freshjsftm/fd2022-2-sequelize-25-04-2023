@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Group extends Model {
     /**
@@ -12,29 +10,38 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Group.belongsToMany(models.User, {
         through: 'users_to_groups',
-        foreignKey: 'groupId'
-      })
+        foreignKey: 'groupId',
+      });
     }
   }
-  Group.init({
-    title: {
-      type:DataTypes.STRING,
-      allowNull: false,
-      validate:{
-        notEmpty: true,
-        notNull: true,
-      }
+  Group.init(
+    {
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          notNull: true,
+        },
+      },
+      description: DataTypes.STRING,
+      imagePath: {
+        type: DataTypes.TEXT,
+        field: 'image_path',
+      },
+      isPrivate: {
+        type: DataTypes.BOOLEAN,
+        field: 'is_private',
+        allowNull: false,
+        defaultValue: false,
+      },
     },
-    description: DataTypes.STRING,
-    imagePath: {
-      type:DataTypes.TEXT,
-      field: 'image_path',
+    {
+      sequelize,
+      modelName: 'Group',
+      tableName: 'groups',
+      underscored: true,
     }
-  }, {
-    sequelize,
-    modelName: 'Group',
-    tableName: 'groups',
-    underscored: true
-  });
+  );
   return Group;
 };

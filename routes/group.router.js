@@ -1,5 +1,7 @@
 const { Router } = require('express');
+const upload = require('../middlewares/upload.mw');
 const GroupController = require('../controllers/group.controller');
+
 const groupRouter = Router();
 
 // http://localhost:3000/api/groups
@@ -10,5 +12,11 @@ groupRouter.get('/users/:idUser', GroupController.getUserGroups);
 groupRouter.patch('/:idGroup', GroupController.addUserAtGroup);
 // http://localhost:3000/api/groups/2/users HTTP/1.1
 groupRouter.get('/:idGroup/users', GroupController.getUsersInGroup);
+// http://localhost:3000/api/groups/2/image
+groupRouter.patch(
+  '/:idGroup/image',
+  upload.single('image'),
+  GroupController.addImage
+);
 
 module.exports = groupRouter;
