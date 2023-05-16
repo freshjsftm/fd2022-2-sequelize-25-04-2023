@@ -4,7 +4,9 @@
     "password": "postgres",
     "database": "fd2022_sequelize",
     "host": "localhost",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "migrationStorage": "json",
+    "seederStorage": "json"
   },
   "test": {
     "username": "postgres",

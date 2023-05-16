@@ -13,10 +13,6 @@ groupRouter.patch('/:idGroup', GroupController.addUserAtGroup);
 // http://localhost:3000/api/groups/2/users HTTP/1.1
 groupRouter.get('/:idGroup/users', GroupController.getUsersInGroup);
 // http://localhost:3000/api/groups/2/image
-groupRouter.patch(
-  '/:idGroup/image',
-  upload.single('image'),
-  GroupController.addImage
-);
+groupRouter.patch('/:idGroup/image', upload.single('image'), GroupController.addImage);
 
 module.exports = groupRouter;

@@ -9,6 +9,7 @@ const router = Router();
 router.use('/users', userRouter);
 // http://localhost:3000/api/users/:idUser/tasks
 router.use('/users/:idUser/tasks', checkUser, taskRouter);
+
 // http://localhost:3000/api/groups
 router.use('/groups', groupRouter);
 

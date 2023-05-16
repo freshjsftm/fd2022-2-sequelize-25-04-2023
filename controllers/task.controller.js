@@ -1,5 +1,6 @@
 const createError = require('http-errors');
 const { Task } = require('../models');
+const LimitTasksError = require('../errors/LimitTasksError');
 
 // module.exports.createTask = async (req, res, next) => {
 //   try {
@@ -17,6 +18,13 @@ const { Task } = require('../models');
 module.exports.createTask = async (req, res, next) => {
   try {
     const { body, userInstance } = req;
+
+    const countTask = await userInstance.countTasks();
+
+    if (countTask >= 5) {
+      return next(new LimitTasksError('Tasks must be less 5'));
+    }
+
     const task = await userInstance.createTask(body);
     res.status(201).send({ data: task });
   } catch (error) {

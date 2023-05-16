@@ -4,9 +4,8 @@ const { ValidationError, UniqueConstraintError } = require('sequelize');
 module.exports.handleError = (err, req, res, next) => {
   console.log('err =====>>>>> ', err);
 
-
   if (err instanceof UniqueConstraintError) {
-    err.status = 400;
+    err.status = 409;
     err.message = err.errors[0].message
   }
 
